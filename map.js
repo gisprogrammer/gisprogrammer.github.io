@@ -5,8 +5,8 @@ function load() {
     map = L.map('mapa').setView([52, 19], 6);
     L.tileLayer('https://mapy.geoportal.gov.pl/wss/ext/OSM/BaseMap/tms/1.0.0/osm_3857/GLOBAL_WEBMERCATOR/{z}/{x}/{y}.png', {
         tms: true,
-        zoomOffset: -1,
-        attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+        zoomOffset:-1,
+        attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> <a href="https://gisprogrammer.github.io">https://gisprogrammer.github.io</a> '
     }).addTo(map);
     var wmsLayer = L.tileLayer.wms('https://integracja.gugik.gov.pl/cgi-bin/KrajowaIntegracjaEwidencjiGruntow', {
         layers: 'geoportal,dzialki,numery_dzialek,budynki', format: 'image/png', transparent: true,
