@@ -4,16 +4,25 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>Maciej</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
-  <link rel="stylesheet" href="lmp-min.css" />
-  <script src="advajax-min.js"></script>
-  <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
-  <script src="leaflet-measure-path-min.js"></script>
-  <link rel="stylesheet" href="map-min.css"/>
-  <script src="map-min.js"> </script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <link rel="stylesheet" href="lmp.css" />
+  <script>L_PREFER_CANVAS = true</script>
+  <script src='http://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-image/v0.0.4/leaflet-image.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+  <script src="advajax.js"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+  <script src="leaflet-measure-path.js"></script>
+  <link rel="stylesheet" href="map.css"/>
+  <script src="map.js"> </script>
+  <script src="dist\leaflet.browser.print.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.js"></script>
 </head>
 
-<body onload="load()">
+<body>
   <form class="form-inline">
     <div style="padding-bottom:2px"><b>Podaj identyfikator szukanej działki</b></div>
     <input type="text" id="pole_szukaj_dzialki" size="36" style="font-size:0.92em;font-family:tahoma;"
@@ -21,6 +30,30 @@
       onclick="szukajDzialkiNew()" value="Szukaj" />
   </form>
   <div id="wyniki"></div>
+  <div id="cover">Generowanie pdf</div>
   <div id="mapa"></div>
+  <button id="download">download</button>
+  <script>
+  /*pdf*/
+  var cover = document.getElementById('cover');
+  document.getElementById('download').addEventListener('click', function() {
+      cover.className = 'active';
+      leafletImage(map, downloadMap);
+  });
+  
+  function downloadMap(err, canvas) {
+      var imgData = canvas.toDataURL("image/png", 1.0);
+      console.log(imgData);
+      var dimensions = map.getSize();
+      
+      var pdf = new jsPDF('l', 'pt', 'letter');
+      pdf.addImage(imgData, 'PNG', 10, 10, dimensions.x * 0.5, dimensions.y * 0.5);
+      
+      cover.className = '';
+  
+      pdf.save("download.pdf");
+  };
+  load();
+  </script>
 </body>
 </html>

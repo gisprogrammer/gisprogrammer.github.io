@@ -12,6 +12,7 @@ function load() {
         layers: 'geoportal,dzialki,numery_dzialek,budynki', format: 'image/png', transparent: true,
     }).addTo(map);
     window.osmMap = map;
+    L.control.browserPrint().addTo(map)
 }
 
 function addPolygon(points) {
@@ -108,3 +109,12 @@ function onkeyszukajdzialki(evt) {
             szukajDzialkiNew();
         }
 }
+window.print = function () {
+	return domtoimage.toPng(document.body)
+				.then(function (dataUrl) {
+					var link = document.createElement('a');
+					link.download = map.printControl.options.documentTitle || "exportedMap" + '.png';
+					link.href = dataUrl;
+					link.click();
+				});
+};
