@@ -1,17 +1,29 @@
 var map = null;
 var polygon = null;
 
+function drukuj(map, L){
+L.control.browserPrint({
+	title: 'Wydruk mapy!',
+	documentTitle: 'Map printed using leaflet.browser.print plugin code:gisprogrammer.github.io/',
+	closePopupsOnPrint: false,
+	printModes: [
+		L.control.browserPrint.mode.landscape(),
+		"Portrait"	],
+	manualMode: false
+}).addTo(map);
+}
 function load() {
     map = L.map('mapa').setView([52, 19], 6);
     L.tileLayer('https://mapy.geoportal.gov.pl/wss/ext/OSM/BaseMap/tms/1.0.0/osm_3857/GLOBAL_WEBMERCATOR/{z}/{x}/{y}.png', {
         tms: true,
         zoomOffset: -1,
-        attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+        attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors <a href="https://gisprogrammer.github.io">github code</a>'
     }).addTo(map);
     var wmsLayer = L.tileLayer.wms('https://integracja.gugik.gov.pl/cgi-bin/KrajowaIntegracjaEwidencjiGruntow', {
         layers: 'geoportal,dzialki,numery_dzialek,budynki', format: 'image/png', transparent: true,
     }).addTo(map);
     window.osmMap = map;
+    drukuj(map,L);
 }
 
 function addPolygon(points) {
